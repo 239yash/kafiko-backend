@@ -8,20 +8,20 @@ const kafka = new Kafka({
 });
 
 // Getting topics list
-// const getTopics = async () => {
-//   const admin = kafka.admin();
-//   await admin.connect();
-//   const topics = await admin.listTopics();
-//   await admin.disconnect();
-//   return topics;
-// };
-// getTopics()
-//   .then((topics) => {
-//     console.log("Kafka topics:", topics);
-//   })
-//   .catch((error) => {
-//     console.error("Error:", error);
-//   });
+const getTopics = async () => {
+  const admin = kafka.admin();
+  await admin.connect();
+  const topics = await admin.listTopics();
+  await admin.disconnect();
+  return topics;
+};
+getTopics()
+  .then((topics) => {
+    console.log("Kafka topics:", topics);
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
 
 
 // Creating Topics
