@@ -1,27 +1,10 @@
 const express = require("express");
-const { Kafka } = require("kafkajs");
 const app = express();
+const kafkaRoutes = require("./routes/routes");
 
-const kafka = new Kafka({
-  clientId: "my-app",
-  brokers: ["localhost:9092"],
-});
-
-// Getting topics list
-const getTopics = async () => {
-  const admin = kafka.admin();
-  await admin.connect();
-  const topics = await admin.listTopics();
-  await admin.disconnect();
-  return topics;
-};
-getTopics()
-  .then((topics) => {
-    console.log("Kafka topics:", topics);
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
+app.use(express.json());
+// Register Kafka routes
+app.use("/kafka", kafkaRoutes);
 
 
 // Creating Topics
@@ -60,8 +43,7 @@ getTopics()
 //     console.error('Error:', error);
 //   });
 
-
-
-app.use(express.json());
-// app.use(cors());
-// app.options("*", cors());
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
