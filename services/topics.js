@@ -8,8 +8,30 @@ const getTopics = async () => {
   return topics;
 };
 
-// Other Kafka-related service functions can be added here
+async function createTopic(topicName) {
+  const admin = kafka.admin();
+  try {
+    await admin.connect();
+    await admin.createTopics({
+      topics: [
+        {
+          topic: topicName,
+          numPartitions: 1,
+          replicationFactor: 1,
+        },
+      ],
+    });
+    console.log(`Topic "${topicName}" created successfully.`);
+  } catch (error) {
+    console.error(`Failed to create topic "${topicName}": ${error.message}`);
+    throw error;
+  } finally {
+    await admin.disconnect();
+  }
+}
+
 
 module.exports = {
   getTopics,
+  createTopic,
 };
