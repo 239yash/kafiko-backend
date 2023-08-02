@@ -4,7 +4,6 @@ const router = express.Router();
 
 // Route for listing topics
 router.get("/topics", kafkaController.listTopics);
-
-// Other routes for other Kafka-related APIs can be added here
+router.post("/topics/create", kafkaController.createTopic);
 
 module.exports = router;
