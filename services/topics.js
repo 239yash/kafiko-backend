@@ -30,8 +30,18 @@ async function createTopic(topicName) {
   }
 }
 
+const getPartitions = async (topicName) => {
+  const admin = kafka.admin();
+  await admin.connect();
+  const partitions = await admin.fetchTopicOffsets(topicName);
+  
+  await admin.disconnect();
+  return partitions;
+};
+
 
 module.exports = {
   getTopics,
   createTopic,
+  getPartitions,
 };

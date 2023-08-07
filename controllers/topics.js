@@ -25,9 +25,21 @@ const createTopic = async (req, res) => {
   }
 };
 
+const listPartitions = async (req, res) => {
+  const { topicName } = req.params;
+  try {
+    const partitions = await kafkaService.getPartitions(topicName);
+    res.json({ partitions });
+  } catch (error) {
+    console.error(`Error fetching partitions for topic ${topicName}:`, error);
+    res.status(500).json({ error: `Error fetching partitions for topic ${topicName}` });
+  }
+};
+
 // Other controller functions for other Kafka-related APIs can be added here
 
 module.exports = {
   listTopics,
   createTopic,
+  listPartitions,
 };
