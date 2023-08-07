@@ -8,7 +8,7 @@ const getTopics = async () => {
   return topics;
 };
 
-async function createTopic(topicName) {
+async function createTopic(topicName, partitionCount) {
   const admin = kafka.admin();
   try {
     await admin.connect();
@@ -16,7 +16,7 @@ async function createTopic(topicName) {
       topics: [
         {
           topic: topicName,
-          numPartitions: 1,
+          numPartitions: partitionCount,
           replicationFactor: 1,
         },
       ],
@@ -34,7 +34,7 @@ const getPartitions = async (topicName) => {
   const admin = kafka.admin();
   await admin.connect();
   const partitions = await admin.fetchTopicOffsets(topicName);
-  
+
   await admin.disconnect();
   return partitions;
 };

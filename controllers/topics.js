@@ -13,11 +13,15 @@ const listTopics = async (req, res) => {
 const createTopic = async (req, res) => {
   try {
     const { topicName } = req.body;
+    const { partitionCount } = req.body;
+    if (!partitionCount) {
+      partitionCount = 1;
+    }
 
     if (!topicName || typeof topicName !== 'string') {
       return res.status(400).json({ error: 'Invalid topic name in the request body.' });
     }
-    await kafkaService.createTopic(topicName);
+    await kafkaService.createTopic(topicName, partitionCount);
     res.status(200).json({"success" : true});
   } catch (error) {
     console.error("Error creating topic:", error);
